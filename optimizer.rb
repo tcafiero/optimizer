@@ -27,7 +27,7 @@ alwaysCall = Hash.new
 stage = Hash.new
 xmlfile = File.open(ARGV[0]+'.xml','r')
 system = xs.xml_in(xmlfile)
-p system
+#p system
 system=system["SYSTEM"]
 system.each do |sysfun|
   sysfun["SYS_FUN"].each do |s|
@@ -74,9 +74,11 @@ system.each do |sysfun|
     end
   end
  end
- p stage
- p alwaysCall
-pr=File.read('../src/optimized_machine_c.template')
-#out=File.open(ARGV[0]+'.c','w')
+# p stage
+# p alwaysCall
+pr=File.read('SYS_FUN_iterate_optimized_c.template')
+out=File.open('SYS_FUN_iterate_optimized.c','w')
 eruby=Erubis::Eruby.new(pr)
-puts eruby.result(binding())
+out.puts eruby.result(binding())
+out.close();
+system 'astile.exe -n SYS_FUN_iterate_optimized.c'
